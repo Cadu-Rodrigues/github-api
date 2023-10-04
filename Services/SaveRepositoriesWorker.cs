@@ -14,7 +14,7 @@ public class SaveRepositoriesWorker : IHostedService
     private async void GetData(object? state)
     {
         string[] languages = { "java", "javascript", "ruby", "python", "csharp" };
-        List<List<Repository>> response = await _repository.GetHighlightsRepositories(languages);
+        List<List<Repository>> response = await _repository.GetHighlightsRepositoriesFromApi(languages);
         _repository.SaveHighlightsRepositories(response);
     }
 
