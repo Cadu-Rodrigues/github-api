@@ -6,15 +6,15 @@ public class RepositoryMapper
         foreach (Item i in response.Items)
         {
             Repository toAdd = new Repository();
-            toAdd.Name = i.Name;
-            toAdd.OwnerName = i.Owner.Login;
-            toAdd.Description = i.Description;
-            toAdd.URL = i.HtmlUrl;
-            toAdd.CreationDate = i.CreatedAt;
-            toAdd.UpdatedDate = i.UpdatedAt;
-            toAdd.Stars = i.StargazersCount;
-            toAdd.Watchers = i.Watchers;
-            toAdd.Language = i.Language;
+            toAdd.Name = i.name;
+            toAdd.OwnerName = i.owner.login;
+            toAdd.Description = i.description;
+            toAdd.URL = i.html_url;
+            toAdd.CreationDate = i.created_at;
+            toAdd.UpdatedDate = i.updated_at;
+            toAdd.Stars = i.stargazers_count;
+            toAdd.Watchers = i.watchers;
+            toAdd.Language = i.language;
             array.Add(toAdd);
         }
         return array;
