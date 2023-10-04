@@ -7,7 +7,6 @@ namespace GithubApi.Controllers;
 public class RepositoriesController : ControllerBase
 {
     private readonly IRepositoriesRepository _repositoriesRepository;
-    private RepositoryMapper mapper = new RepositoryMapper();
     public RepositoriesController(IRepositoriesRepository repositoriesRepository)
     {
         _repositoriesRepository = repositoriesRepository;
@@ -16,18 +15,7 @@ public class RepositoriesController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetHighlightsRepositories()
     {
-        List<HighlightsRepositoriesDTO> response = new List<HighlightsRepositoriesDTO>();
-        string[] languages = { "java", "javascript", "ruby", "python", "csharp" };
-        for (int i = 0; i < languages.Length; i++)
-        {
-            var model = await _repositoriesRepository.GetHighlightsRepositoriesFromLanguage(languages[i]);
-            var repositories = mapper.convert(model);
-            HighlightsRepositoriesDTO dto = new HighlightsRepositoriesDTO(){
-                language = repositories[0].Language,
-                repositories = repositories
-            };
-            response.Add(dto);
-        }
+        List<HighlightsRepositoriesDTO> response = _repositoriesRepository.GetHighlightsRepositoriesFromMemory();
         if (response == null)
             return NotFound();
         return Ok(response);
