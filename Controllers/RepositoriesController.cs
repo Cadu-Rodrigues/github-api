@@ -17,7 +17,7 @@ public class RepositoriesController : ControllerBase
     public async Task<IActionResult> GetHighlightsRepositories()
     {
         List<HighlightsRepositoriesDTO> response = new List<HighlightsRepositoriesDTO>();
-        string[] languages = { "java", "javascript", "ruby", "python", "C#" };
+        string[] languages = { "java", "javascript", "ruby", "python", "csharp" };
         for (int i = 0; i < languages.Length; i++)
         {
             var model = await _repositoriesRepository.GetHighlightsRepositoriesFromLanguage(languages[i]);
