@@ -1,5 +1,6 @@
 using RestSharp;
 using API.Data;
+using API.Models;
 
 namespace API.Repositories;
 public class RepositoriesRepository : IRepositoriesRepository
@@ -36,7 +37,8 @@ public class RepositoriesRepository : IRepositoriesRepository
     {
         // Remove todos os registros existentes
         var oldData = _context.Languages.ToList();
-        _context.Languages.RemoveRange(oldData);
+        if(oldData != null)
+            _context.Languages.RemoveRange(oldData);
         _context.Languages.AddRange(languages);
         _context.SaveChanges();
     }

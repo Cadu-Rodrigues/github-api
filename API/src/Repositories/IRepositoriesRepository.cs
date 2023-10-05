@@ -1,4 +1,6 @@
 
+using API.Models;
+
 public interface IRepositoriesRepository
 {
     Task<RepositoriesApiResponse> GetHighlightsRepositoriesFromLanguage(string language);

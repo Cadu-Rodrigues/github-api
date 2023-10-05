@@ -1,4 +1,6 @@
 
+using API.Models;
+
 public sealed class SaveRepositoriesWorker : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;

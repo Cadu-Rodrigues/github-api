@@ -1,3 +1,5 @@
+using API.Models;
+
 public class RepositoryMapper
 {
     public List<Repository> convert(RepositoriesApiResponse response)

@@ -10,6 +10,14 @@ builder.Services.AddSingleton<IRepositoriesRepository, RepositoriesRepository>()
 builder.Services.AddHostedService<SaveRepositoriesWorker>();
 builder.Services.AddDbContext<RepositoriesContext>(options =>
    options.UseNpgsql(builder.Configuration.GetConnectionString("RepositoriesContext")));
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyOrigin();
+        });
+});
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
@@ -35,6 +43,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseHttpsRedirection();
+app.UseCors();
 app.Urls.Add("http://*:5000");
 app.MapControllers();
 
