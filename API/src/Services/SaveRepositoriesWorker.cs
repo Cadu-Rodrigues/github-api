@@ -4,7 +4,7 @@ public class SaveRepositoriesWorker : IHostedService
     private Timer _timer;
     public SaveRepositoriesWorker(IRepositoriesRepository repository){
         _repository = repository;
-        _timer = new Timer(GetData, null, TimeSpan.Zero, TimeSpan.FromSeconds(15));
+        _timer = new Timer(GetData, null, TimeSpan.Zero, TimeSpan.FromSeconds(200));
     }
     public Task StartAsync(CancellationToken cancellationToken)
     {

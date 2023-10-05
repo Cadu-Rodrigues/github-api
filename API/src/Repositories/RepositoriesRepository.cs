@@ -1,5 +1,5 @@
 using RestSharp;
-namespace GithubApi.Repositories;
+namespace API.Repositories;
 public class RepositoriesRepository : IRepositoriesRepository
 {
     private RepositoryMapper mapper = new RepositoryMapper();
