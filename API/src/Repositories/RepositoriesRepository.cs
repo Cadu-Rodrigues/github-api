@@ -8,7 +8,8 @@ public class RepositoriesRepository : IRepositoriesRepository
     private RepositoryMapper mapper = new RepositoryMapper();
     private readonly RepositoriesContext _context;
 
-    public RepositoriesRepository(RepositoriesContext context){
+    public RepositoriesRepository(RepositoriesContext context)
+    {
         _context = context;
     }
     public async Task<RepositoriesApiResponse> GetHighlightsRepositoriesFromLanguage(string language)
@@ -25,7 +26,8 @@ public class RepositoriesRepository : IRepositoriesRepository
         {
             var model = await GetHighlightsRepositoriesFromLanguage(languages[i]);
             List<Repository> repositories = mapper.convert(model);
-            Language newLanguage = new Language(){
+            Language newLanguage = new Language()
+            {
                 Name = languages[i],
                 Repositories = repositories,
             };
@@ -35,12 +37,12 @@ public class RepositoriesRepository : IRepositoriesRepository
     }
     public void SaveHighlightsRepositories(List<Language> languages)
     {
-        // Remove todos os registros existentes
-        var oldData = _context.Languages.ToList();
-        if(oldData != null)
-            _context.Languages.RemoveRange(oldData);
-        _context.Languages.AddRange(languages);
+        foreach (Language language in languages)
+        {
+            _context.Add(language);
+        }
         _context.SaveChanges();
+
     }
     public List<Language> GetHighlightsRepositoriesFromMemory()
     {
