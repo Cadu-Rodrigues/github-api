@@ -1,9 +1,15 @@
 using RestSharp;
+using API.Data;
+
 namespace API.Repositories;
 public class RepositoriesRepository : IRepositoriesRepository
 {
     private RepositoryMapper mapper = new RepositoryMapper();
-    private List<List<Repository>> internalRepository = new List<List<Repository>>();
+    private readonly RepositoriesContext _context;
+
+    public RepositoriesRepository(RepositoriesContext context){
+        _context = context;
+    }
     public async Task<RepositoriesApiResponse> GetHighlightsRepositoriesFromLanguage(string language)
     {
         var options = new RestClientOptions("https://api.github.com");
@@ -11,32 +17,32 @@ public class RepositoriesRepository : IRepositoriesRepository
         var response = await client.GetJsonAsync<RepositoriesApiResponse>($"/search/repositories?q=language:{language}&sort=stars&order=desc&per_page=5");
         return response;
     }
-    public async Task<List<List<Repository>>> GetHighlightsRepositoriesFromApi(string[] languages)
+    public async Task<List<Language>> GetHighlightsRepositoriesFromApi(string[] languages)
     {
-        List<List<Repository>> response = new List<List<Repository>>();
+        List<Language> response = new List<Language>();
         for (int i = 0; i < languages.Length; i++)
         {
             var model = await GetHighlightsRepositoriesFromLanguage(languages[i]);
-            var repositories = mapper.convert(model);
-            response.Add(repositories);
-        }
-        return response;
-    }
-    public void SaveHighlightsRepositories(List<List<Repository>> repositories)
-    {
-        internalRepository = repositories;
-    }
-    public List<HighlightsRepositoriesDTO> GetHighlightsRepositoriesFromMemory()
-    {
-        List<HighlightsRepositoriesDTO> response = new List<HighlightsRepositoriesDTO>();
-        foreach(List<Repository> list in internalRepository){
-            HighlightsRepositoriesDTO dto = new HighlightsRepositoriesDTO()
-            {
-                language = list[0].Language,
-                repositories = list
+            List<Repository> repositories = mapper.convert(model);
+            Language newLanguage = new Language(){
+                Name = languages[i],
+                Repositories = repositories,
             };
-            response.Add(dto);
+            response.Add(newLanguage);
         }
         return response;
+    }
+    public void SaveHighlightsRepositories(List<Language> languages)
+    {
+        // Remove todos os registros existentes
+        var oldData = _context.Languages.ToList();
+        _context.Languages.RemoveRange(oldData);
+        _context.Languages.AddRange(languages);
+        _context.SaveChanges();
+    }
+    public List<Language> GetHighlightsRepositoriesFromMemory()
+    {
+        List<Language> languages = _context.Languages.ToList();
+        return languages;
     }
 }

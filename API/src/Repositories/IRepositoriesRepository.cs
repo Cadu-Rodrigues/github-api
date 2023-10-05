@@ -2,7 +2,7 @@
 public interface IRepositoriesRepository
 {
     Task<RepositoriesApiResponse> GetHighlightsRepositoriesFromLanguage(string language);
-    Task<List<List<Repository>>> GetHighlightsRepositoriesFromApi(string[] languages);
-    List<HighlightsRepositoriesDTO> GetHighlightsRepositoriesFromMemory();
-    void SaveHighlightsRepositories(List<List<Repository>> repositories);
+    Task<List<Language>> GetHighlightsRepositoriesFromApi(string[] languages);
+    List<Language> GetHighlightsRepositoriesFromMemory();
+    void SaveHighlightsRepositories(List<Language> languages);
 }

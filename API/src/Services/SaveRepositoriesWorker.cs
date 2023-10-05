@@ -1,9 +1,10 @@
-public class SaveRepositoriesWorker : IHostedService
+
+public sealed class SaveRepositoriesWorker : IHostedService
 {
-    private IRepositoriesRepository _repository;
+    private readonly IServiceProvider _serviceProvider;
     private Timer _timer;
-    public SaveRepositoriesWorker(IRepositoriesRepository repository){
-        _repository = repository;
+    public SaveRepositoriesWorker(IServiceProvider serviceProvider){
+        _serviceProvider = serviceProvider;
         _timer = new Timer(GetData, null, TimeSpan.Zero, TimeSpan.FromSeconds(200));
     }
     public Task StartAsync(CancellationToken cancellationToken)
@@ -13,9 +14,13 @@ public class SaveRepositoriesWorker : IHostedService
 
     private async void GetData(object? state)
     {
-        string[] languages = { "java", "javascript", "ruby", "python", "csharp" };
-        List<List<Repository>> response = await _repository.GetHighlightsRepositoriesFromApi(languages);
-        _repository.SaveHighlightsRepositories(response);
+        using (var scope = _serviceProvider.CreateScope())
+        {
+            IRepositoriesRepository repository = scope.ServiceProvider.GetRequiredService<IRepositoriesRepository>();
+            string[] languages = { "java", "javascript", "ruby", "python", "csharp" };
+            List<Language> response = await repository.GetHighlightsRepositoriesFromApi(languages);
+            repository.SaveHighlightsRepositories(response);
+        }
     }
 
     public Task StopAsync(CancellationToken cancellationToken)

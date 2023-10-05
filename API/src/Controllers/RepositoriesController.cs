@@ -13,9 +13,9 @@ public class RepositoriesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetHighlightsRepositories()
+    public IActionResult GetHighlightsRepositories()
     {
-        List<HighlightsRepositoriesDTO> response = _repositoriesRepository.GetHighlightsRepositoriesFromMemory();
+        List<Language> response = _repositoriesRepository.GetHighlightsRepositoriesFromMemory();
         if (response == null)
             return NotFound();
         return Ok(response);
