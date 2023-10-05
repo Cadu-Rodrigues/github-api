@@ -39,7 +39,14 @@ public class RepositoriesRepository : IRepositoriesRepository
     {
         foreach (Language language in languages)
         {
-            _context.Add(language);
+            var entity = _context.Languages.FirstOrDefault(l => l.ID == l.ID);
+            if (entity is null)
+                _context.Add(language);
+            else
+            {
+                entity.Repositories = language.Repositories;
+                _context.Update(entity);
+            }
         }
         _context.SaveChanges();
 
