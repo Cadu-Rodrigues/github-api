@@ -7,7 +7,7 @@ public sealed class SaveRepositoriesWorker : IHostedService
     private Timer _timer;
     public SaveRepositoriesWorker(IServiceProvider serviceProvider){
         _serviceProvider = serviceProvider;
-        _timer = new Timer(GetData, null, TimeSpan.Zero, TimeSpan.FromSeconds(200));
+        _timer = new Timer(GetData, null, TimeSpan.Zero, TimeSpan.FromHours(1));
     }
     public Task StartAsync(CancellationToken cancellationToken)
     {
