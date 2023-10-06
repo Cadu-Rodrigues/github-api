@@ -1,0 +1,17 @@
+<div class="main">
+    <div class="language-container" *ngFor="let language of response">
+        <p>{{language.name}}</p>
+        <div class="cards-container">
+            <div class="card" *ngFor="let repository of language.repositories">
+                <h2 class="name">{{repository.name}}</h2>
+                <p>Owner: {{repository.ownerName}}</p>
+                <p class="description">{{repository.description}}</p>
+                <a [href]="repository.url">Link Repositório</a>
+                <p>Criado em:{{repository.creationDate | date: "dd/MM/yyyy"}}</p>
+                <p>Ultima Atualização:{{repository.updatedDate | date:"dd/MM/yyyy"}}</p>
+                <p>{{repository.stars }}  Stars</p>
+                <p>{{repository.watchers }} Watchers</p>
+            </div>
+        </div>
+    </div>
+</div>

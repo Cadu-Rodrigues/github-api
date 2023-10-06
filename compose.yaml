@@ -8,10 +8,15 @@ services:
       - postgres-data:/var/lib/postgresql/data
   app:
     build:
-      context: .
+      context: ./API/
     ports:
       - 5000:5000
     depends_on:
       - db
+  front:
+    build:
+      context: ./Front
+    ports:
+      - 4200:4200
 volumes:
   postgres-data:
